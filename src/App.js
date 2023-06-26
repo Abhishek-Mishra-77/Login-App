@@ -20,13 +20,15 @@ const App = () => {
     }
   }, [])
 
-
+  // Login from getting email and password from Login component
   const loginHandler = (email, password) => {
     localStorage.setItem('UsergetLogin', 'samosa');
     setIsLoggedIn(true);
   }
 
+  //LogOut From getting home to comeback login Component
   const logOutHandler = () => {
+    localStorage.removeItem('UsergetLogin')
     setIsLoggedIn(false);
   }
 

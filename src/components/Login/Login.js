@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../UI/Card";
 import classes from './Login.module.css';
 import Button from '../UI/Button';
@@ -10,35 +10,69 @@ const Login = (props) => {
     const [emailIsValid, setemailIsValid] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
     const [passwordIsValid, setPasswrodIsValid] = useState('');
+    const [enteredCollegeName , setEnteredCollegeName] = useState('');
+    const [collegeNameIsvalid , setCollegeNameIsValid] = useState('');
     const [formIsValid, setFormIsValid] = useState(false);
+
+
+
+
+    //useEffect to check Validates in only on time 
+    useEffect(() => {
+        setFormIsValid(enteredEmail.includes('@') && enteredPassword.trim().length > 6 && enteredCollegeName.trim().length > 0);
+    }, [enteredEmail, enteredPassword , enteredCollegeName])
+
+
+
 
     // email Handler
     const emailChangeHandler = (event) => {
         setEnteredEmail(event.target.value);
-        setFormIsValid(event.target.value.includes('@') && enteredPassword.trim().length > 6);
+
     }
 
     // Password Handler
     const passwordChangeHandler = (event) => {
         setEnteredPassword(event.target.value);
-        setFormIsValid(event.target.value.trim().length > 6 && enteredEmail.includes('@'))
+
     }
 
+
+    // CollegeName handler
+    
+    const collegeNameChangeHandler = (event) => {
+        setEnteredCollegeName(event.target.value);
+    }
+
+    // Check email valid or not
     const validEmailHandler = () => {
         setemailIsValid(enteredEmail.includes('@'));
     }
 
+
+
+    // Check paddword is valid or not
     const validPasswordHandler = () => {
         setPasswrodIsValid(enteredPassword.trim().length > 6);
     }
 
 
-    //Main Submimt button which takes props from App.js or we can say root components
+    
+    //Check collegeName is Valid or not 
+    const validCollegeNameHandler = () => {
+        setCollegeNameIsValid(enteredCollegeName.trim().length > 0)
+    }
 
+
+
+
+    //Main Submimt button which takes props from App.js or we can say root components
     const submitHandler = (event) => {
         event.preventDefault();
         props.onLogin(enteredEmail, enteredPassword)
     }
+
+
 
     return (
         <Card className={classes.login}>
@@ -61,6 +95,17 @@ const Login = (props) => {
                         value={enteredPassword}
                         onChange={passwordChangeHandler}
                         onBlur={validPasswordHandler}
+                    />
+                </div>
+
+                <div className={`${classes.control} ${collegeNameIsvalid === false ? classes.invalid : ''}`}>
+                    <label htmlFor="college">College Name</label>
+                    <input
+                        type="text"
+                        id="college "
+                        value={enteredCollegeName}
+                        onChange={collegeNameChangeHandler}
+                        onBlur={validCollegeNameHandler}
                     />
                 </div>
 
