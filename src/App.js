@@ -1,17 +1,48 @@
-import React, { Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import MainHeader from "./components/MainHeader/MainHeader";
-// import Home from "./components/Home/Home";
+import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 
 
 
 
-function App() {
+const App = () => {
+
+
+  const [isLoggeIn, setIsLoggedIn] = useState(false);
+
+  // useEffect for once I login then no need to come back in login page i will reach in the home
+
+  useEffect(() => {
+    const storeUsersPassword = localStorage.getItem('UsergetLogin');
+    if (storeUsersPassword === 'samosa') {
+      setIsLoggedIn(true);
+    }
+  }, [])
+
+
+  const loginHandler = (email, password) => {
+    localStorage.setItem('UsergetLogin', 'samosa');
+    setIsLoggedIn(true);
+  }
+
+  const logOutHandler = () => {
+    setIsLoggedIn(false);
+  }
+
   return (
     <Fragment>
-      <MainHeader></MainHeader>
-      {/* <Home></Home> */}
-      <Login></Login>
+      <MainHeader
+        isAuthenticated={isLoggeIn}
+        onLogOut={logOutHandler}>
+      </MainHeader>
+
+      <main>
+        {!isLoggeIn && <Login onLogin={loginHandler}></Login>}
+        {isLoggeIn && <Home onLogOut={logOutHandler}></Home>}
+
+      </main>
+
     </Fragment>
   );
 }
