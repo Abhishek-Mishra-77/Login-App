@@ -1,0 +1,8 @@
+.home {
+    width: 90%;
+    max-width: 50rem;
+    padding: 3rem;
+    border: 2px solid red;
+    margin: 7rem auto;
+    text-align: center;
+}
