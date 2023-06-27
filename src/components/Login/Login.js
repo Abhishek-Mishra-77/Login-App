@@ -10,8 +10,8 @@ const Login = (props) => {
     const [emailIsValid, setemailIsValid] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
     const [passwordIsValid, setPasswrodIsValid] = useState('');
-    const [enteredCollegeName , setEnteredCollegeName] = useState('');
-    const [collegeNameIsvalid , setCollegeNameIsValid] = useState('');
+    const [enteredCollegeName, setEnteredCollegeName] = useState('');
+    const [collegeNameIsvalid, setCollegeNameIsValid] = useState('');
     const [formIsValid, setFormIsValid] = useState(false);
 
 
@@ -19,8 +19,17 @@ const Login = (props) => {
 
     //useEffect to check Validates in only on time 
     useEffect(() => {
-        setFormIsValid(enteredEmail.includes('@') && enteredPassword.trim().length > 6 && enteredCollegeName.trim().length > 0);
-    }, [enteredEmail, enteredPassword , enteredCollegeName])
+        const timer = setTimeout(() => {
+            console.log('rames')
+            setFormIsValid(enteredEmail.includes('@') && enteredPassword.trim().length > 6 && enteredCollegeName.trim().length > 0);
+        }, 500)
+
+        return () => {
+            console.log('clean Up')
+            clearTimeout(timer)
+        }
+
+    }, [enteredEmail, enteredPassword, enteredCollegeName])
 
 
 
@@ -39,7 +48,7 @@ const Login = (props) => {
 
 
     // CollegeName handler
-    
+
     const collegeNameChangeHandler = (event) => {
         setEnteredCollegeName(event.target.value);
     }
@@ -57,7 +66,7 @@ const Login = (props) => {
     }
 
 
-    
+
     //Check collegeName is Valid or not 
     const validCollegeNameHandler = () => {
         setCollegeNameIsValid(enteredCollegeName.trim().length > 0)
