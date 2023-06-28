@@ -5,15 +5,14 @@ import Navigation from "./Navigation";
 
 const MainHeader = (props) => {
     return (
-            <header className={classes['main-header']}>
+        <header className={classes['main-header']}>
             <h1>A Typical page</h1>
-            <Navigation 
-            isLoggedIn={props.isAuthenticated}
-            onLogOut={props.onLogOut}>
+            <Navigation
+                onLogOut={props.onLogOut}>
 
             </Navigation>
         </header>
-       
+
     )
 }
 
