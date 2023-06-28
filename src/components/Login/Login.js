@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import Card from "../UI/Card";
 import classes from './Login.module.css';
 import Button from '../UI/Button';
+import AuthContext from "../context/AuthContext";
+import Input from "../UI/Input";
+
+
 
 // UseReducer Function for Email validation 
 const emailReducer = (state, action) => {
@@ -63,7 +67,7 @@ const Login = (props) => {
     // const [enteredCollegeName, setEnteredCollegeName] = useState('');
     // const [collegeNameIsvalid, setCollegeNameIsValid] = useState('');
     const [formIsValid, setFormIsValid] = useState(false);
-
+    const authContext = useContext(AuthContext)
 
 
 
@@ -80,18 +84,19 @@ const Login = (props) => {
 
     // useReducer state for validating the CollegeName
     const [collegeState, dispatchCollege] = useReducer(collegeReducer, {
-        value: '', isValid: null}
+        value: '', isValid: null
+    }
     )
 
 
     //Once our login page gets valid no need to check 
-const {isValid :emailIsValid} = emailState;
-const {isValid : passwordIsValid} = passwordState;
-const {isValid : collegeNameIsvalid} = collegeState;
+    const { isValid: emailIsValid } = emailState;
+    const { isValid: passwordIsValid } = passwordState;
+    const { isValid: collegeNameIsvalid } = collegeState;
 
 
 
-   // useEffect to check Validates in only on time 
+    // useEffect to check Validates in only on time 
     useEffect(() => {
         const timer = setTimeout(() => {
             console.log('rames')
@@ -103,7 +108,7 @@ const {isValid : collegeNameIsvalid} = collegeState;
             clearTimeout(timer)
         }
 
-    }, [emailIsValid, passwordIsValid, collegeNameIsvalid ])
+    }, [emailIsValid, passwordIsValid, collegeNameIsvalid])
 
 
 
@@ -165,7 +170,7 @@ const {isValid : collegeNameIsvalid} = collegeState;
     //Main Submimt button which takes props from App.js or we can say root components
     const submitHandler = (event) => {
         event.preventDefault();
-        props.onLogin(emailState.value, passwordState.value)
+        authContext.onLogin(emailState.value, passwordState.value)
     }
 
 
@@ -173,37 +178,35 @@ const {isValid : collegeNameIsvalid} = collegeState;
     return (
         <Card className={classes.login}>
             <form onSubmit={submitHandler}>
-                <div className={`${classes.control} ${emailState.isValid === false ? classes.invalid : ''}`}>
-                    <label htmlFor="email">E-Mail</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={emailState.value}
-                        onChange={emailChangeHandler}
-                        onBlur={validEmailHandler}
-                    />
-                </div>
-                <div className={`${classes.control} ${passwordState.isValid === false ? classes.invalid : ''}`}>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={passwordState.value}
-                        onChange={passwordChangeHandler}
-                        onBlur={validPasswordHandler}
-                    />
-                </div>
+                <Input
+                    label="E-Mail"
+                    type="email"
+                    id="E-Mail"
+                    isValid={emailIsValid}
+                    value={emailState.value}
+                    onChange={emailChangeHandler}
+                    onBlur={validEmailHandler}
+                />
 
-                <div className={`${classes.control} ${collegeState.isValid === false ? classes.invalid : ''}`}>
-                    <label htmlFor="college">College Name</label>
-                    <input
-                        type="text"
-                        id="college "
-                        value={collegeState.value}
-                        onChange={collegeNameChangeHandler}
-                        onBlur={validCollegeNameHandler}
-                    />
-                </div>
+                <Input
+                    label="Password"
+                    type="password"
+                    id="Password"
+                    isValid={passwordIsValid}
+                    value={passwordState.value}
+                    onChange={passwordChangeHandler}
+                    onBlur={validPasswordHandler}
+                />
+
+                <Input
+                    label="College Name"
+                    type="collegName"
+                    id="College"
+                    isValid={collegeNameIsvalid}
+                    value={collegeState.value}
+                    onChange={collegeNameChangeHandler}
+                    onBlur={validCollegeNameHandler}
+                />
 
                 <div className={classes.actions}>
                     <Button type="submit"
